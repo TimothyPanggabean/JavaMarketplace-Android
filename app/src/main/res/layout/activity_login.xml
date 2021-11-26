@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textAlignment="gravity"
-    tools:context=".LoginActivity">
+    tools:context=".jmart_android.LoginActivity">
 
     <EditText
         android:id="@+id/emailLogin"

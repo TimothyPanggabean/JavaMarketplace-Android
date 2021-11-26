@@ -10,12 +10,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Jmartandroid">
         <activity
-            android:name=".MainActivity"
+            android:name=".jmart_android.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".RegisterActivity"
+            android:name=".jmart_android.RegisterActivity"
             android:exported="false" />
-        <activity android:name=".LoginActivity">
+        <activity android:name=".jmart_android.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
