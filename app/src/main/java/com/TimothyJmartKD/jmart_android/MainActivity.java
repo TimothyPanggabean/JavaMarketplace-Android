@@ -9,11 +9,12 @@ import com.TimothyJmartKD.R;
 public class MainActivity extends AppCompatActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         TextView mainText = findViewById(R.id.mainText);
-        mainText.setText("Hello " + LoginActivity.getLoggedAccount().name +"!");
+        mainText.setText("Hello, " + LoginActivity.getLoggedAccount().name + "!");
+        mainText.setTextSize(20);
     }
 }
