@@ -31,6 +31,10 @@ public class LoginActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView btnRegister;
 
+    public static void setLoggedAccount(Account account) {
+        loggedAccount = account;
+    }
+
     public static Account getLoggedAccount(){
 
         return loggedAccount;
@@ -55,13 +59,13 @@ public class LoginActivity extends AppCompatActivity {
                         try {
                             JSONObject object = new JSONObject(response);
                             if(object != null){
-                                Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
                             }
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             loggedAccount = gson.fromJson(object.toString(), Account.class);
                             startActivity(intent);
                         } catch (JSONException e) {
-                            Toast.makeText(LoginActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
 
@@ -70,10 +74,10 @@ public class LoginActivity extends AppCompatActivity {
                 Response.ErrorListener errorListener = new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(LoginActivity.this, "Login Failed 2", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Login failed", Toast.LENGTH_SHORT).show();
                     }
                 };
-                String getemail = email.getText().toString();
+                String getemail = email.getText().toString().toLowerCase();
                 String getpassword = password.getText().toString();
                 LoginRequest loginRequest = new LoginRequest(getemail, getpassword, listener, errorListener);
                 RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);

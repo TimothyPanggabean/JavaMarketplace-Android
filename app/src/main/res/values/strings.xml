@@ -1,3 +1,46 @@
 <resources>
     <string name="app_name">jmart-android</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="shipmentPlans">
+        <item>INSTANT</item>
+        <item>SAME_DAY</item>
+        <item>NEXT_DAY</item>
+        <item>REGULER</item>
+        <item>KARGO</item>
+    </string-array>
+    <string-array name="productCategory">
+        <item>BOOK</item>
+        <item>KITCHEN</item>
+        <item>ELECTRONIC</item>
+        <item>FASHION</item>
+        <item>GAMING</item>
+        <item>GADGET</item>
+        <item>MOTHERCARE</item>
+        <item>COSMETICS</item>
+        <item>HEALTHCARE</item>
+        <item>FURNITURE</item>
+        <item>JEWELERY</item>
+        <item>TOYS</item>
+        <item>FNB</item>
+        <item>STATIONERY</item>
+        <item>SPORTS</item>
+        <item>AUTOMOTIVE</item>
+        <item>PETCARE</item>
+        <item>ART_CRAFT</item>
+        <item>CARPENTRY</item>
+        <item>MISCELLANEOUS</item>
+        <item>PROPERTY</item>
+        <item>TRAVEL</item>
+        <item>WEDDING</item>
+    </string-array>
+    <string name="title_activity_create_product">CreateProductActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
 </resources>

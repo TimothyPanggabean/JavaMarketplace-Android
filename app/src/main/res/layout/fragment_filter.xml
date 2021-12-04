@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".jmart_android.FilterFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <TextView
+        android:id="@+id/labelNameFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginEnd="353dp"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <EditText
+        android:id="@+id/inputNameFilter"
+        android:layout_width="370dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="21dp"
+        android:ems="10"
+        android:hint="Product Name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelNameFilter" />
+
+    <TextView
+        android:id="@+id/labelLowestPriceFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="306dp"
+        android:text="Lowest Price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputNameFilter" />
+
+    <EditText
+        android:id="@+id/inputLowestPriceFilter"
+        android:layout_width="152dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="235dp"
+        android:ems="10"
+        android:hint="Lowest Price"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelLowestPriceFilter" />
+
+    <EditText
+        android:id="@+id/inputHighestPriceFilter"
+        android:layout_width="152dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="17dp"
+        android:ems="10"
+        android:hint="Highest Price"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/inputLowestPriceFilter"
+        app:layout_constraintTop_toBottomOf="@+id/labelHighestPriceFilter" />
+
+    <TextView
+        android:id="@+id/labelHighestPriceFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="137dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="87dp"
+        android:text="Highest Price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/labelLowestPriceFilter"
+        app:layout_constraintTop_toBottomOf="@+id/inputNameFilter" />
+
+    <TextView
+        android:id="@+id/labelToFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="72dp"
+        android:layout_marginEnd="30dp"
+        android:text="to"
+        app:layout_constraintEnd_toStartOf="@+id/inputHighestPriceFilter"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/inputLowestPriceFilter"
+        app:layout_constraintTop_toBottomOf="@+id/inputNameFilter" />
+
+    <TextView
+        android:id="@+id/labelProductCondition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="275dp"
+        android:text="Product Condition"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/inputLowestPriceFilter" />
+
+    <CheckBox
+        android:id="@+id/checkBoxNewFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="106dp"
+        android:layout_marginTop="20dp"
+        android:text="New"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/labelProductCondition"
+        app:layout_constraintTop_toBottomOf="@+id/inputHighestPriceFilter" />
+
+    <CheckBox
+        android:id="@+id/checkBoxUsedFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:text="Used"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/checkBoxNewFilter"
+        app:layout_constraintTop_toBottomOf="@+id/inputHighestPriceFilter" />
+
+    <TextView
+        android:id="@+id/labelProductCategoryFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="278dp"
+        android:text="Product Category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelProductCondition" />
+
+    <Spinner
+        android:id="@+id/spinnerFilter"
+        android:layout_width="147dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="115dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginEnd="16dp"
+        android:entries="@array/productCategory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/labelProductCategoryFilter"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxNewFilter" />
+
+    <Button
+        android:id="@+id/buttonApplyFilter"
+        android:layout_width="161dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="144dp"
+        android:layout_marginEnd="226dp"
+        android:backgroundTint="@color/buttonColor"
+        android:text="APPLY"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/labelProductCategoryFilter" />
+
+    <Button
+        android:id="@+id/buttonClearFilter"
+        android:layout_width="161dp"
+        android:layout_height="52dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginEnd="20dp"
+        android:backgroundTint="@color/buttonColor"
+        android:text="CLEAR"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/buttonApplyFilter"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerFilter" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

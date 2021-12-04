@@ -25,7 +25,6 @@ public class RegisterActivity extends AppCompatActivity{
     private EditText PasswordRegister;
     private Button btnRegister;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,24 +42,24 @@ public class RegisterActivity extends AppCompatActivity{
                         try {
                             JSONObject object = new JSONObject(response);
                             if(object != null){
-                                Toast.makeText(RegisterActivity.this, "Register Successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(RegisterActivity.this, "Registered successfully", Toast.LENGTH_SHORT).show();
                                 Intent i = new Intent(RegisterActivity.this, LoginActivity.class);
                                 startActivity(i);
                             }
                         }catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(RegisterActivity.this, "Register Failer", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                         }
                     }
                 };
                 Response.ErrorListener errorListener = new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(RegisterActivity.this, "Register Failed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(RegisterActivity.this, "Registration failed", Toast.LENGTH_SHORT).show();
                     }
                 };
                 String name = NameRegister.getText().toString();
-                String email = EmailRegister.getText().toString();
+                String email = EmailRegister.getText().toString().toLowerCase();
                 String password = PasswordRegister.getText().toString();
                 RegisterRequest registerRequest = new RegisterRequest(name, email, password, listener, errorListener);
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
