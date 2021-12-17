@@ -13,9 +13,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/buttonColor"
+        android:backgroundTint="@color/purple_500"
         android:text="Prev"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,9 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:backgroundTint="@color/buttonColor"
+        android:backgroundTint="@color/purple_500"
         android:text="Next"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toStartOf="@+id/productPageNumber"
         app:layout_constraintStart_toEndOf="@+id/productPrevPage"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,9 +37,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/buttonColor"
+        android:backgroundTint="@color/purple_500"
         android:text="Go"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/productPageNumber"
@@ -61,7 +61,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
-        android:id="@+id/listView"
+        android:id="@+id/productsList"
         android:layout_width="403dp"
         android:layout_height="518dp"
         android:layout_marginTop="4dp"

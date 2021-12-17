@@ -2,6 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/sticky_note_2"
+        android:icon="@drawable/ic_baseline_sticky_note_2_24"
+        android:title="Invoice"
+        app:showAsAction="always"
+        />
+    <item
         android:id="@+id/search"
         android:icon="@drawable/ic_baseline_search_24"
         android:title="Search"

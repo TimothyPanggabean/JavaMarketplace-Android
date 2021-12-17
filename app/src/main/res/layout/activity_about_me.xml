@@ -117,9 +117,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:backgroundTint="@color/buttonColor"
+                android:backgroundTint="@color/purple_500"
                 android:text="Top Up"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@+id/accountBalance" />
 

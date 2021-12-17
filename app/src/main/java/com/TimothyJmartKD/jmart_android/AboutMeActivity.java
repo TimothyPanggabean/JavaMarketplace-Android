@@ -25,6 +25,9 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class AboutMeActivity extends AppCompatActivity {
     private static final Gson gson = new Gson();
 
@@ -33,6 +36,9 @@ public class AboutMeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_me);
         this.setTitle("About Me");
+
+        Locale myIndonesianLocale = new Locale("in", "ID");
+        NumberFormat formater = NumberFormat.getCurrencyInstance(myIndonesianLocale);
 
         RequestQueue queue = Volley.newRequestQueue(AboutMeActivity.this);
 
@@ -43,8 +49,7 @@ public class AboutMeActivity extends AppCompatActivity {
 
         accountName.setText(String.valueOf(getLoggedAccount().name));
         accountEmail.setText(String.valueOf(getLoggedAccount().email));
-        accountBalance.setText(String.valueOf(getLoggedAccount().balance));
-
+        accountBalance.setText((formater.format(getLoggedAccount().balance)));
 
         CardView storeCard = findViewById(R.id.store_card);
         CardView registeredCard = findViewById(R.id.registeredCard);
@@ -88,7 +93,7 @@ public class AboutMeActivity extends AppCompatActivity {
                         {
                             Double totalBalance = Double.parseDouble(accountBalance.getText().toString())
                                     + Double.parseDouble(topUpAmount.getText().toString());
-                            accountBalance.setText(String.valueOf(totalBalance));
+                            accountBalance.setText(String.valueOf(formater.format(totalBalance)));
                             getLoggedAccount().balance = totalBalance;
 
                             topUpAmount.setText("");
@@ -122,7 +127,7 @@ public class AboutMeActivity extends AppCompatActivity {
 
                     if(amount < 20000)
                     {
-                        Toast.makeText(getApplicationContext(), "The minimum amount is 20000",
+                        Toast.makeText(getApplicationContext(), "The minimum amount is Rp20.000",
                                 Toast.LENGTH_SHORT).show();
                     }
                     else

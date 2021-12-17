@@ -1,37 +1,28 @@
 package com.TimothyJmartKD.jmart_android;
 
-import static com.TimothyJmartKD.jmart_android.ProductsFragment.productReturned;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.TimothyJmartKD.R;
-import com.TimothyJmartKD.jmart_android.model.Product;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
+public class InvoiceActivity extends AppCompatActivity {
     private static final int NUM_PAGES = 2;
     //The pager widget, which handles animation and allows swiping horizontally to access previous and next wizard steps.
     public static ViewPager2 viewPager;
     // The pager adapter, which provides the pages to the view pager widget.
     private FragmentStateAdapter pagerAdapter;
     // Arrey of strings FOR TABS TITLES
-    private String[] titles = new String[]{"Products", "Filter"};
+    private String[] titles = new String[]{"Account", "Store"};
     // tab titles
 
     @Override
@@ -53,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
         public Fragment createFragment(int pos) {
             switch (pos) {
                 case 0: {
-                    return ProductsFragment.newInstance("fragment 1");
+                    return AccountInvoiceFragment.newInstance("fragment 1");
                 }
                 case 1: {
-                    return FilterFragment.newInstance("fragment 2");
+                    return StoreInvoiceFragment.newInstance("fragment 2");
                 }
                 default:
-                    return ProductsFragment.newInstance("fragment 1, Default");
+                    return AccountInvoiceFragment.newInstance("fragment 1, Default");
             }
         }
 
@@ -68,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
             return NUM_PAGES;
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -82,49 +72,27 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.add_box:
-                Intent toCreateProductPage = new Intent(MainActivity.this, CreateProductActivity.class);
+                Intent toCreateProductPage = new Intent(InvoiceActivity.this, CreateProductActivity.class);
                 startActivity(toCreateProductPage);
                 return true;
             case R.id.person:
-                Intent toAboutMePage = new Intent(MainActivity.this, AboutMeActivity.class);
+                Intent toAboutMePage = new Intent(InvoiceActivity.this, AboutMeActivity.class);
                 startActivity(toAboutMePage);
                 return true;
             case R.id.sticky_note_2:
-                Intent toInvoicePage = new Intent(MainActivity.this, InvoiceActivity.class);
+                Intent toInvoicePage = new Intent(InvoiceActivity.this, MainActivity.class);
                 startActivity(toInvoicePage);
             default:
                 return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        menu.findItem(R.id.add_box).setVisible(LoginActivity.getLoggedAccount().store != null);
-        androidx.appcompat.widget.SearchView search = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.search).getActionView();
-        ArrayAdapter<Product> adapter = new ArrayAdapter<Product>(MainActivity.this, android.R.layout.simple_list_item_1, productReturned);
-        ListView listView = findViewById(R.id.productsList);
-        search.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                listView.setAdapter(adapter);
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                ArrayAdapter<Product> adapter = new ArrayAdapter<Product>(MainActivity.this, android.R.layout.simple_list_item_1, productReturned);
-                listView.setAdapter(adapter);
-                adapter.getFilter().filter(newText);
-                return false;
-            }
-        });
-
-        return true;
     }
 }

@@ -33,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity{
         EmailRegister = findViewById(R.id.emailRegister);
         PasswordRegister = findViewById(R.id.passwordRegister);
         btnRegister = findViewById(R.id.registerButton);
+
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

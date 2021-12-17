@@ -13,6 +13,18 @@
         android:theme="@style/Theme.Jmartandroid"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".jmart_android.StoreInvoiceDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".jmart_android.InvoiceActivity"
+            android:exported="false" />
+        <activity
+            android:name=".jmart_android.AccountInvoiceDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".jmart_android.ProductDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".jmart_android.CreateProductActivity"
             android:exported="false" />
         <activity
