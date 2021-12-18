@@ -130,9 +130,9 @@
                 android:layout_marginStart="18dp"
                 android:layout_marginTop="36dp"
                 android:layout_marginEnd="19dp"
-                android:backgroundTint="@color/buttonColor"
+                android:backgroundTint="@color/purple_500"
                 android:text="Register Store"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toBottomOf="@+id/topUpButton" />
@@ -208,9 +208,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="38dp"
                         android:layout_marginTop="19dp"
-                        android:backgroundTint="@color/buttonColor"
+                        android:backgroundTint="@color/purple_500"
                         android:text="Register"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         card_view:layout_constraintStart_toStartOf="parent"
                         card_view:layout_constraintTop_toBottomOf="@+id/registerPhoneNumber" />
 
@@ -220,9 +220,9 @@
                         android:layout_height="48dp"
                         android:layout_marginTop="19dp"
                         android:layout_marginEnd="38dp"
-                        android:backgroundTint="@color/buttonColor"
+                        android:backgroundTint="@color/purple_500"
                         android:text="Cancel"
-                        android:textColor="@color/black"
+                        android:textColor="@color/white"
                         card_view:layout_constraintEnd_toEndOf="parent"
                         card_view:layout_constraintTop_toBottomOf="@+id/registerPhoneNumber" />
 

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
@@ -15,6 +16,18 @@ import com.TimothyJmartKD.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+/**
+ * Activity yang menjadi main activity untuk invoice page
+ * yaitu: inisiasi kedua fragment dalam activity invoice
+ *
+ * Activity ini menggunakan 2 fragment,
+ * yaitu: AccountInvoiceFragment dan StoreInvoiceFragment
+ * Beberapa method pertama berfungsi untuk inisiasi kedua fragment ini
+ *
+ * Activity ini memanfaatkan response listener dan error response listener,
+ * dimana response listener dijalankan ketika menerima response dari springboot
+ * dan response error listener ketika tidak menerima response dari springboot
+ */
 public class InvoiceActivity extends AppCompatActivity {
     private static final int NUM_PAGES = 2;
     //The pager widget, which handles animation and allows swiping horizontally to access previous and next wizard steps.
@@ -25,10 +38,16 @@ public class InvoiceActivity extends AppCompatActivity {
     private String[] titles = new String[]{"Account", "Store"};
     // tab titles
 
+    /**
+     * Hal yang terjadi ketika activity dimulai
+     * yaitu: menghubungkan ke halaman xml dan mencari komponen yang ada pada xml
+     * dengan menggunakan id nya
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.setTitle("Invoice");
         viewPager = findViewById(R.id.mypager2);
         pagerAdapter = new MyPagerAdapter(this);
         viewPager.setAdapter(pagerAdapter); //inflating tab layout
@@ -36,6 +55,13 @@ public class InvoiceActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager,(tab, position) -> tab.setText(titles[position])).attach();
     }
 
+    /**
+     * Inisiasi AccountInvoiceFragment sebagai fragment pertama
+     * dan StoreInvoiceFragment sebagai fragment kedua
+     *
+     * Selain itu, AccountInvoiceFragment juga dijadikan default
+     * yang artinya dia merupakan fragment pertama yang dibuka ketika activity dijalankan
+     */
     private class MyPagerAdapter extends FragmentStateAdapter {
         public MyPagerAdapter(FragmentActivity fa) {
             super(fa);
@@ -60,6 +86,9 @@ public class InvoiceActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Mengatur fungsi back button pada masing2 fragment
+     */
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 0) {
@@ -69,30 +98,6 @@ public class InvoiceActivity extends AppCompatActivity {
         } else {
 // Otherwise, select the previous step.
             viewPager.setCurrentItem(viewPager.getCurrentItem() - 1);
-        }
-    }
-
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()) {
-            case R.id.add_box:
-                Intent toCreateProductPage = new Intent(InvoiceActivity.this, CreateProductActivity.class);
-                startActivity(toCreateProductPage);
-                return true;
-            case R.id.person:
-                Intent toAboutMePage = new Intent(InvoiceActivity.this, AboutMeActivity.class);
-                startActivity(toAboutMePage);
-                return true;
-            case R.id.sticky_note_2:
-                Intent toInvoicePage = new Intent(InvoiceActivity.this, MainActivity.class);
-                startActivity(toInvoicePage);
-            default:
-                return super.onOptionsItemSelected(item);
         }
     }
 }

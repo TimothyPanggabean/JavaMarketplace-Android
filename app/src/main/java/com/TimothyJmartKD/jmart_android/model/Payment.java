@@ -3,10 +3,9 @@ package com.TimothyJmartKD.jmart_android.model;
 import java.util.*;
 
 /**
- * Class Payment
+ * Model yang digunakan untuk mengatur komponen2 dalam pembayaran
+ * yaitu: jenis pengiriman, jumlah produk, dan history (timestamp dan status)
  *
- * Timothy Christian Panggabean
- * 1906355705
  */
 public class Payment extends Invoice
 {
@@ -15,6 +14,13 @@ public class Payment extends Invoice
 
     public ArrayList<Record> history;
 
+    /**
+     * Inisiasi komponen2 payment
+     * @param buyerId id pembeli
+     * @param productId id produk yang dibeli
+     * @param productCount jumlah produk yang dibeli
+     * @param shipment jenis pengiriman (diatur di model Shipment)
+     */
     public Payment(int buyerId, int productId, int productCount, Shipment shipment)
     {
         super(buyerId,productId);
@@ -22,11 +28,19 @@ public class Payment extends Invoice
         this.shipment = shipment;
     }
 
+    /**
+     * Mengambil harga total dari produk
+     * @param product produk yang ingin dicari harga totalnya
+     */
     public double getTotalPay(Product product)
     {
-        return product.price - (product.price * product.discount);
+        return (product.price - (product.price * product.discount/100)) * productCount;
     }
 
+    /**
+     * Membuat record yang berisi informasi tambahan dari pembayaran
+     * seperti: timestamp dan message (sama seperti status)
+     */
     public static class Record
     {
         public final Date date;

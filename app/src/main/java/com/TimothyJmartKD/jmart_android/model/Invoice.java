@@ -3,10 +3,8 @@ package com.TimothyJmartKD.jmart_android.model;
 import java.util.Date;
 
 /**
- * Class Invoice
- *
- * Timothy Christian Panggabean
- * 1906355705
+ * Model yang digunakan untuk mengatur komponen2 dalam invoice
+ * yaitu: timestamp, id buyer dan seller, id complaint dan rating (tidak diimplementasi dalam program akhir)
  */
 public abstract class Invoice extends Serializable
 {
@@ -16,6 +14,11 @@ public abstract class Invoice extends Serializable
     public int complaintId = -1;
     public Rating rating = Rating.NONE;
 
+    /**
+     * Inisiasi komponen2 invoice
+     * @param buyerId id pembeli
+     * @param productId id produk yang dibeli
+     */
     protected Invoice(int buyerId, int productId)
     {
         this.buyerId = buyerId;

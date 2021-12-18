@@ -28,9 +28,22 @@ import org.json.JSONObject;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+/**
+ * Activity yang mengatur alur program pada about me page
+ * yaitu: menampilkan informasi user, toko, membuat toko, dan top up
+ *
+ * Activity ini memanfaatkan response listener dan error response listener,
+ * dimana response listener dijalankan ketika menerima response dari springboot
+ * dan response error listener ketika tidak menerima response dari springboot
+ */
 public class AboutMeActivity extends AppCompatActivity {
     private static final Gson gson = new Gson();
 
+    /**
+     * Hal yang terjadi ketika activity dimulai
+     * yaitu: menghubungkan ke halaman xml, inisasi tombol pada xml,
+     * dan mengatur alur tiap tombol (apa yang terjadi ketika tombol ditekan)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +60,10 @@ public class AboutMeActivity extends AppCompatActivity {
         TextView accountBalance = findViewById(R.id.accountBalance);
         EditText topUpAmount = findViewById(R.id.topUpAmount);
 
+        /**
+         * Menampilkan informasi dasar mengenai akun
+         * yaitu: nama, email, dan balance
+         */
         accountName.setText(String.valueOf(getLoggedAccount().name));
         accountEmail.setText(String.valueOf(getLoggedAccount().email));
         accountBalance.setText((formater.format(getLoggedAccount().balance)));
@@ -67,6 +84,11 @@ public class AboutMeActivity extends AppCompatActivity {
         TextView registerAddress = findViewById(R.id.registerAddress);
         TextView registerPhoneNumber = findViewById(R.id.registerPhoneNumber);
 
+        /**
+         * Membuat tampilan yang berbeda ketika sudah punya toko dan belum
+         * Ketika ada, informasi toko ditampilkan
+         * Ketika tidak, tampilkan opsi untuk membuat toko baru
+         */
         if(getLoggedAccount().store != null) {
             registerStoreButton.setVisibility(View.GONE);
             storeCard.setVisibility(View.GONE);
@@ -82,6 +104,9 @@ public class AboutMeActivity extends AppCompatActivity {
             registeredCard.setVisibility(View.GONE);
         }
 
+        /**
+         * Alur yang terjadi ketika menekan tombol topUp
+         */
         topUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -91,15 +116,23 @@ public class AboutMeActivity extends AppCompatActivity {
                     {
                         if(response.equals("true"))
                         {
-                            Double totalBalance = Double.parseDouble(accountBalance.getText().toString())
-                                    + Double.parseDouble(topUpAmount.getText().toString());
-                            accountBalance.setText(String.valueOf(formater.format(totalBalance)));
-                            getLoggedAccount().balance = totalBalance;
+                            /**
+                             * User hanya bisa topup apabila sudah memiliki toko
+                             * ketika berhasil, informasi balance akan di update
+                             */
+                            if(getLoggedAccount().store!=null) {
+                                Double totalBalance = getLoggedAccount().balance
+                                        + Double.parseDouble(topUpAmount.getText().toString());
+                                accountBalance.setText(String.valueOf(formater.format(totalBalance)));
+                                getLoggedAccount().balance = totalBalance;
 
-                            topUpAmount.setText("");
+                                topUpAmount.setText("");
 
-                            Toast.makeText(getApplicationContext(),
-                                    "Top up successful", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),
+                                        "Top up successful", Toast.LENGTH_SHORT).show();
+                            }
+                            else Toast.makeText(getApplicationContext(),
+                                    "Need a store to top up", Toast.LENGTH_SHORT).show();
                         }
                         else
                             {
@@ -117,11 +150,21 @@ public class AboutMeActivity extends AppCompatActivity {
                     }
                 };
 
+                /**
+                 * Request hanya akan dijalankan ketika:
+                 * jumlah top up tidak kosong,
+                 * akun yang top up sudah memiliki store,
+                 * dan nominal top up minimal Rp 20.000
+                 */
                 if(topUpAmount.getText().toString().isEmpty())
                 {
                     Toast.makeText(getApplicationContext(), "Field can't be empty",
                             Toast.LENGTH_SHORT).show();
-                } else
+                }
+                else if(getLoggedAccount().store==null)
+                    Toast.makeText(getApplicationContext(), "Need a store to top up",
+                            Toast.LENGTH_SHORT).show();
+                else
                     {
                     Double amount = Double.valueOf(topUpAmount.getText().toString());
 
@@ -140,6 +183,14 @@ public class AboutMeActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan tombol register store
+         * CardView baru akan tampil untuk tempat mengisi informasi toko yang ingin diregister
+         * CardView ini berisi:
+         * field informasi (store name, address, phone number)
+         * tombol cancel (menutup cardview yang baru dibuat)
+         * dan tombol register (mengirimkan RegisterStoreRequest)
+         */
         registerStoreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,6 +216,10 @@ public class AboutMeActivity extends AppCompatActivity {
                                         JSONObject object = new JSONObject(response);
                                         if (object != null) {
 
+                                            /**
+                                             * Ketika store berhasil di register, informasi pada card akan berubah
+                                             * sesuai informasi yang diisi
+                                             */
                                             getLoggedAccount().store = gson.fromJson(object.toString(), Store.class);
 
                                             registeredName.setText(getLoggedAccount().store.name);
@@ -186,6 +241,11 @@ public class AboutMeActivity extends AppCompatActivity {
                             }
                         };
 
+                        /**
+                         * Sebelum mengirimkan request, field dicek terlebih dahulu
+                         * Apabila salah satu saja kosong, request tidak dikirimkan dan
+                         * register akan gagal
+                         */
                         String newStoreName = registerName.getText().toString();
                         String newStoreAddress = registerAddress.getText().toString();
                         String newStorePhoneNumber = registerPhoneNumber.getText().toString();

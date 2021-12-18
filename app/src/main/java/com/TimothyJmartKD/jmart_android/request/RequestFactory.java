@@ -1,11 +1,13 @@
 package com.TimothyJmartKD.jmart_android.request;
 
-import com.TimothyJmartKD.jmart_android.model.Account;
 import com.android.volley.*;
 import com.android.volley.toolbox.StringRequest;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * Request yang seharusnya digunakan untuk mengatur pengambilan data berdasarkan id dan halaman
+ * getById fungsinya digantikan oleh GetSpecificAccountRequest dan GetSpecificAccountRequest
+ * getPage fungsinya digantikan dengan dilakukan manual pada request masing - masing
+ */
 public class RequestFactory {
     private static final String URL_FORMAT_ID = "http://10.0.2.2:8080/%s/%d";
     private static final String URL_FORMAT_PAGE = "http://10.0.2.2:8080/%s/page?page=%s&pageSize=%s";

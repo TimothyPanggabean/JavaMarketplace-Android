@@ -5,7 +5,6 @@ import static com.TimothyJmartKD.jmart_android.LoginActivity.getLoggedAccount;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,10 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.TimothyJmartKD.R;
-import com.TimothyJmartKD.jmart_android.model.Payment;
-import com.TimothyJmartKD.jmart_android.model.Product;
 import com.TimothyJmartKD.jmart_android.request.PaymentRequest;
-import com.TimothyJmartKD.jmart_android.request.RegisterRequest;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,8 +25,21 @@ import org.json.JSONObject;
 import java.text.NumberFormat;
 import java.util.Locale;
 
+/**
+ * Activity yang mengatur alur program pada product detail page
+ * yaitu: menampilakn detail mengenai sebuah produk, dan membelinya
+ *
+ * Activity ini memanfaatkan response listener dan error response listener,
+ * dimana response listener dijalankan ketika menerima response dari springboot
+ * dan response error listener ketika tidak menerima response dari springboot
+ */
 public class ProductDetailActivity extends AppCompatActivity {
 
+    /**
+     * Hal yang terjadi ketika activity dimulai
+     * yaitu: menghubungkan ke halaman xml, inisasi tombol pada xml,
+     * dan mengatur alur tiap tombol (apa yang terjadi ketika tombol ditekan)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,10 +49,17 @@ public class ProductDetailActivity extends AppCompatActivity {
         CardView confirmation = findViewById(R.id.confirmationCard);
         confirmation.setVisibility(View.INVISIBLE);
 
+        /**
+         * Mengatur nilai minimal dan maksimal dari number picker
+         */
         NumberPicker np = findViewById(R.id.numberPicker);
         np.setMinValue(1);
         np.setMaxValue(20);
 
+        /**
+         * Mengatur jenis format yang dilakukan,
+         * yaitu: mengubah balance ke dalam format rupiah
+         */
         Locale myIndonesianLocale = new Locale("in", "ID");
         NumberFormat formater = NumberFormat.getCurrencyInstance(myIndonesianLocale);
 
@@ -54,24 +70,29 @@ public class ProductDetailActivity extends AppCompatActivity {
         TextView productDiscount = findViewById(R.id.productDiscountText);
         TextView productCategory = findViewById(R.id.productCategoryText);
         TextView productShipmentPlans = findViewById(R.id.productShipmentPlansText);
-
         TextView nameConfirmation = findViewById(R.id.productNameText2);
         TextView amountConfirmation = findViewById(R.id.productAmount);
         TextView totalPrice = findViewById(R.id.totalPrice);
-
         TextView total = findViewById(R.id.totalText);
 
         Button accept = findViewById(R.id.acceptButton);
         Button cancel = findViewById(R.id.cancelButton2);
-
         Button buyButton = findViewById(R.id.buyButton);
+
         NumberPicker numberPicker = findViewById(R.id.numberPicker);
+
+        /**
+         * Mengambil data bundle yang dikirim oleh ProductsFragment
+         */
         Bundle bundle = getIntent().getExtras();
 
         buyButton.setVisibility(View.INVISIBLE);
         numberPicker.setVisibility(View.INVISIBLE);
         total.setVisibility(View.INVISIBLE);
 
+        /**
+         * Mengisi setiap informasi dari produk yang terkait
+         */
         productName.setText(bundle.getString("Name"));
         productWeight.setText(String.valueOf(bundle.getInt("Weight")) + " kg");
 
@@ -93,6 +114,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             productShipmentPlans.setText("Reguler");
         else productShipmentPlans.setText("Kargo");
 
+        /**
+         * Tombol pilihan hanya akan tampil apabila produk tidak berasal
+         * dari toko milik user saat ini
+         */
         if(getLoggedAccount().id == bundle.getInt("AccountId"))
         {
             buyButton.setVisibility(View.INVISIBLE);
@@ -105,6 +130,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             total.setVisibility(View.VISIBLE);
         }
 
+        /**
+         * Alur yang terjadi ketika menekan tombol buy,
+         * yaitu: memunculkan CardView konfirmasi yang berisi informasi
+         * produk seperti nama, jumlah yang dibeli, dan harga total
+         */
         buyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +146,9 @@ public class ProductDetailActivity extends AppCompatActivity {
 
                 if(getLoggedAccount().balance < grandTotal)
                 {
+                    /**
+                     * Pembelian hanya bisa dilakukan apabila balance user cukup
+                     */
                     Toast.makeText(ProductDetailActivity.this,
                             "Insufficient funds", Toast.LENGTH_SHORT).show();
                 }
@@ -128,6 +161,11 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan tombol accept,
+         * yaitu: mengurangi balance user sesuai harga pembelian, dan
+         * membuat invoice baru dengan status awaiting confirmation
+         */
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +200,9 @@ public class ProductDetailActivity extends AppCompatActivity {
                         Toast.makeText(ProductDetailActivity.this, " An error occurred", Toast.LENGTH_SHORT).show();
                     }
                 };
+                /**
+                 * Mengirimkan request ke PaymentRequest menggunakan informasi mengenai pembelian user
+                 */
                 int buyerId = getLoggedAccount().id;
                 int productId = bundle.getInt("ProductId");
                 int productCount = numberPicker.getValue();
@@ -174,6 +215,10 @@ public class ProductDetailActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan tombol cancel,
+         * yaitu: menghapus CardView confirmation
+         */
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

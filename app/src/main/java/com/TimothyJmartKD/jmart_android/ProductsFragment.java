@@ -41,6 +41,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Activity yang mengatur alur program pada product page
+ * yaitu: menampilkan produk dengan pagination 10 per page, dimana
+ * setiap entri dapat diklik untuk menampilkan detail
+ *
+ * Activity ini memanfaatkan response listener dan error response listener,
+ * dimana response listener dijalankan ketika menerima response dari springboot
+ * dan response error listener ketika tidak menerima response dari springboot
+ */
 public class ProductsFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -57,6 +66,9 @@ public class ProductsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Inisiasi fragment, diikuti inisiasi pada onCreate
+     */
     public static ProductsFragment newInstance(String param1) {
         ProductsFragment fragment = new ProductsFragment();
         Bundle args = new Bundle();
@@ -74,6 +86,11 @@ public class ProductsFragment extends Fragment {
         }
     }
 
+    /**
+     * Hal yang terjadi ketika fragment selesai diinisiasi
+     * yaitu: menghubungkan ke halaman xml, inisasi tombol pada xml,
+     * dan mengatur alur tiap tombol (apa yang terjadi ketika tombol ditekan)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -93,6 +110,9 @@ public class ProductsFragment extends Fragment {
                     JSONArray jsonArray = new JSONArray(response);
                     productReturned.clear();
 
+                    /**
+                     * Mengisi ListView dengan produk produk yang didapat dari GetProductRequest
+                     */
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject newObj = jsonArray.getJSONObject(i);
                         Product product = gson.fromJson(newObj.toString(), Product.class);
@@ -106,7 +126,6 @@ public class ProductsFragment extends Fragment {
                 }
             }
         };
-
         Response.ErrorListener errorListener = new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -114,17 +133,30 @@ public class ProductsFragment extends Fragment {
                         Toast.LENGTH_SHORT).show();
             }
         };
+
         int pages = Integer.parseInt(pageNum.getText().toString()) - 1;
 
+        /**
+         * Mengirimkan request ke GetProductRequest untuk ditampilkan di ListView
+         */
         GetProductRequest newGetProduct = new GetProductRequest(pages, listener, errorListener);
         RequestQueue queue = Volley.newRequestQueue(getActivity().getBaseContext());
         queue.add(newGetProduct);
 
+        /**
+         * Alur yang terjadi ketika salah satu entri ditekan,
+         * yaitu: mengirimkan data bundle ke activity detail, serta pindah
+         * ke activity tersebut
+         */
         lstItems.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id){
                 Product product = productReturned.get(position);
 
+                /**
+                 * Membuat objek product baru agar detail yang ditampilkan sesuai bahkan
+                 * ketika ListView diisi informasi yang berbeda (cth: ketika filter dan search)
+                 */
                 for(Product preProduct: productReturned){
                     if(preProduct.name.equals(((TextView)view).getText().toString()))
                         product = preProduct;
@@ -147,11 +179,18 @@ public class ProductsFragment extends Fragment {
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan tombol prev,
+         * yaitu mengurangi nomor pada field halaman
+         */
         prevPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 int currentPage = Integer.parseInt(pageNum.getText().toString());
                 if(currentPage == 1) {
+                    /**
+                     * Mencegah adanya halaman menjadi negatif apabila di halaman pertama
+                     */
                     Toast.makeText(getContext(), "That page doesn't exist", Toast.LENGTH_SHORT).show();
                 }
                 else {
@@ -161,6 +200,10 @@ public class ProductsFragment extends Fragment {
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan tombol next,
+         * yaitu menambah nomor pada field halaman
+         */
         nextPageBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -170,6 +213,14 @@ public class ProductsFragment extends Fragment {
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan tombol go,
+         * yaitu: menampilkan data yang didapatkan dari request
+         *
+         * Ada 2 kemungkinan ketika menekan tombol go, yaitu ketika ada filter dan tidak
+         * Ketika tidak ada filter, semua produk ditampilkan,
+         * Ketika ada filter, hanya produk yang sesuai yang ditampilkan
+         */
         goFindProductBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,57 +257,71 @@ public class ProductsFragment extends Fragment {
                     };
                     int pages = Integer.parseInt(pageNum.getText().toString()) - 1;
 
+                    /**
+                     * Pencarian tanpa filter requestnya dikirimkan ke GetProductRequest
+                     */
                     GetProductRequest newGetProduct = new GetProductRequest(pages, listener, errorListener);
                     RequestQueue queue = Volley.newRequestQueue(getActivity().getBaseContext());
                     queue.add(newGetProduct);
                 }
                 else{
-                Response.Listener<String> listener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray jsonArray = new JSONArray(response);
-                            productReturned.clear();
+                    Response.Listener<String> listener = new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            try {
+                                JSONArray jsonArray = new JSONArray(response);
+                                productReturned.clear();
 
-                            for(int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject newObj = jsonArray.getJSONObject(i);
-                                Product product = gson.fromJson(newObj.toString(), Product.class);
-                                productReturned.add(product);
+                                for(int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject newObj = jsonArray.getJSONObject(i);
+                                    Product product = gson.fromJson(newObj.toString(), Product.class);
+                                    productReturned.add(product);
+                                }
+                                    ArrayAdapter<Product> allItemsAdapter = new ArrayAdapter<Product>(getActivity().getBaseContext(),
+                                            android.R.layout.simple_list_item_1,
+                                            productReturned);
+                                            lstItems.setAdapter(allItemsAdapter);
+                                }
+                            catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                                ArrayAdapter<Product> allItemsAdapter = new ArrayAdapter<Product>(getActivity().getBaseContext(),
-                                        android.R.layout.simple_list_item_1,
-                                        productReturned);
-                                        lstItems.setAdapter(allItemsAdapter);
-                            }
-                        catch (JSONException e) {
-                            e.printStackTrace();
                         }
-                    }
-                };
-                Response.ErrorListener errorListener = new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), "An error occurred",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                };
-                int pages = Integer.parseInt(pageNum.getText().toString()) - 1;
+                    };
+                    Response.ErrorListener errorListener = new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getContext(), "An error occurred",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    int pages = Integer.parseInt(pageNum.getText().toString()) - 1;
 
                     String searchName = filterName;
                     int minimumPrice = filterLowestPrice;
                     int maximumPrice = filterHighestPrice;
                     ProductCategory category = filterCategory;
 
-                    GetFilteredProductRequest newFilteredProduct = new GetFilteredProductRequest(pages,
-                            getLoggedAccount().id, searchName, minimumPrice, maximumPrice, category, listener, errorListener);
+                    /**
+                     * Pencarian dengan filter requestnya dikirimkan ke GetFilteredProductRequest
+                     */
+                    GetFilteredProductRequest newFilteredProduct = new GetFilteredProductRequest(pages, 10
+                             , getLoggedAccount().id, searchName, minimumPrice, maximumPrice, category, listener, errorListener);
                     RequestQueue queue = Volley.newRequestQueue(getActivity().getBaseContext());
                     queue.add(newFilteredProduct);
-            }
+                }
             }
         });
         return v;
     }
 
+    /**
+     * Hal yang terjadi ketika kembali ke fragment ini dari fragment filter,
+     * yaitu: mengembalikan produk setelah difilter ketika ada filter,
+     * dan mengembalikan semua produk ketika tidak ada filter
+     *
+     * Ini diperlukan agar tidak perlu menekan tombol go setelah apply filter
+     * Hal yang dilakukan sama seperti sebelumnya
+     */
     public void onResume() {
         super.onResume();
         Gson gson = new Gson();
@@ -328,7 +393,7 @@ public class ProductsFragment extends Fragment {
             int maxPrice = filterHighestPrice;
             ProductCategory category = filterCategory;
 
-            GetFilteredProductRequest newFilteredProduct = new GetFilteredProductRequest(pages, getLoggedAccount().id, searchName, minPrice, maxPrice, category, listener, errorListener);
+            GetFilteredProductRequest newFilteredProduct = new GetFilteredProductRequest(pages, 10, getLoggedAccount().id, searchName, minPrice, maxPrice, category, listener, errorListener);
             RequestQueue queue = Volley.newRequestQueue(getActivity().getBaseContext());
             queue.add(newFilteredProduct);
         }

@@ -22,8 +22,15 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Activity yang mengatur alur program pada login page
+ * yaitu: menerima dan mengecek kredensial yang dimasukkan oleh user
+ *
+ * Activity ini memanfaatkan response listener dan error response listener,
+ * dimana response listener dijalankan ketika menerima response dari springboot
+ * dan response error listener ketika tidak menerima response dari springboot
+ */
 public class LoginActivity extends AppCompatActivity {
-
     private static final Gson gson = new Gson();
     private static Account loggedAccount = null;
     private EditText password;
@@ -36,11 +43,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public static Account getLoggedAccount(){
-
         return loggedAccount;
-
     }
 
+    /**
+     * Hal yang terjadi ketika activity dimulai
+     * yaitu: menghubungkan ke halaman xml, inisasi tombol pada xml,
+     * dan mengatur alur tiap tombol (apa yang terjadi ketika tombol ditekan)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +60,10 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.loginButton);
         btnRegister = findViewById(R.id.registerNowButton);
 
+        /**
+         * Alur yang terjadi ketika menekan tombol login,
+         * yaitu: mengambil input dan mengirimkannya ke LoginRequest
+         */
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,6 +72,9 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONObject object = new JSONObject(response);
+                            /**
+                             * Ketika login berhasil, user akan dipindahkan ke MainActivity
+                             */
                             if(object != null){
                                 Toast.makeText(LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
                             }
@@ -68,7 +85,6 @@ public class LoginActivity extends AppCompatActivity {
                             Toast.makeText(LoginActivity.this, "Invalid credentials", Toast.LENGTH_SHORT).show();
                             e.printStackTrace();
                         }
-
                     }
                 };
                 Response.ErrorListener errorListener = new Response.ErrorListener() {
@@ -84,6 +100,11 @@ public class LoginActivity extends AppCompatActivity {
                 queue.add(loginRequest);
             }
         });
+
+        /**
+         * Alur yang terjadi ketika menekan tombol register,
+         * yaitu: pindah ke RegisterActivity
+         */
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

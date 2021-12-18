@@ -1,13 +1,13 @@
 package com.TimothyJmartKD.jmart_android.model;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Calendar;
 
 /**
- * Class Shipment
- *
- * Timothy Christian Panggabean
- * 1906355705
+ * Model yang mengatur komponen2 dalam pengiriman
+ * yaitu: timestamp, jenis pengiriman, alamat, biaya, dan receipt
+ * method isDuration tidak diimplementasi pada program akhir
  */
 public class Shipment
 {
@@ -22,6 +22,13 @@ public class Shipment
     public byte plan;
     public String receipt;
 
+    /**
+     * Inisiasi komponen2 payment
+     * @param address alamat pengiriman
+     * @param cost biaya pengiriman
+     * @param plan jenis pengiriman
+     * @param receipt receipt yang akan dicetak
+     */
     public Shipment(String address, int cost, byte plan, String receipt)
     {
         this.address = address;

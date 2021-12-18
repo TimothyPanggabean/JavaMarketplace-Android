@@ -23,9 +23,22 @@ import com.TimothyJmartKD.jmart_android.request.CreateProductRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * Activity yang mengatur alur program pada create product page
+ * yaitu: membuat produk baru berdasarkan informasi yang diinput user
+ *
+ * Activity ini memanfaatkan response listener dan error response listener,
+ * dimana response listener dijalankan ketika menerima response dari springboot
+ * dan response error listener ketika tidak menerima response dari springboot
+ */
 public class CreateProductActivity extends AppCompatActivity {
     boolean conditionUsed = false;
 
+    /**
+     * Hal yang terjadi ketika activity dimulai
+     * yaitu: menghubungkan ke halaman xml, inisasi tombol pada xml,
+     * dan mengatur alur tiap tombol (apa yang terjadi ketika tombol ditekan)
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +54,17 @@ public class CreateProductActivity extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.cancelButton);
         Button createButton = findViewById(R.id.createButton);
 
+        /**
+         * Pilihan pada komponen spinner diatur pada ProductCategory.values
+         */
         categorySpinner.setAdapter(new ArrayAdapter<ProductCategory>
                 (this, android.R.layout.simple_spinner_item, ProductCategory.values()));
 
+        /**
+         * Alur yang terjadi ketika menekan tombol cancel
+         * yaitu: menampilkan pesan berhasil ketika produk berhasil dibuat
+         * dan menampilkan pesan gagal ketika produk gagal dibuat
+         */
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,10 +91,12 @@ public class CreateProductActivity extends AppCompatActivity {
                 };
 
                 String productNameString = productName.getText().toString();
-
                 ProductCategory productCategory = ProductCategory.valueOf(categorySpinner.getSelectedItem().toString());
-                byte productShipment = 1 << 0;
 
+                /**
+                 * Mengubah kembali string ke dalam byte agar dapat diolah pada backend
+                 */
+                byte productShipment = 1 << 0;
                 switch(shipmentSpinner.getSelectedItem().toString()) {
                     case "INSTANT" :
                         productShipment = 1 << 0;
@@ -91,6 +114,11 @@ public class CreateProductActivity extends AppCompatActivity {
                         productShipment = 1 << 4;
                         break;
                 }
+                /**
+                 * Produk hanya dapat dibuat ketika semua field telah diisi
+                 * Apabila sudah, activity akan mengirim request dengan CreateProductRequest
+                 * menggunakan informasi produk yang telah diinput oleh user
+                 */
                 if(productNameString.isEmpty() || productWeight.getText().toString().isEmpty() ||
                         productPrice.getText().toString().isEmpty() || productDiscount.getText().toString().isEmpty())
                 {
@@ -111,6 +139,10 @@ public class CreateProductActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan tombol radio,
+         * yaitu mengubah nilai boolean conditionUsed
+         */
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -126,6 +158,10 @@ public class CreateProductActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan cancel button,
+         * yaitu kembali ke MainActivity
+         */
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

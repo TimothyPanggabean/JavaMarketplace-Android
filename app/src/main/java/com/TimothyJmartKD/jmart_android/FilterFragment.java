@@ -16,6 +16,15 @@ import android.widget.Toast;
 import com.TimothyJmartKD.R;
 import com.TimothyJmartKD.jmart_android.model.ProductCategory;
 
+/**
+ * Activity yang mengatur alur program pada filter page
+ * yaitu: memfilter produk yang ditampilkan berdasarkan filter yang ditentukan user,
+ * serta meng-clear filter tersebut
+ *
+ * Activity ini memanfaatkan response listener dan error response listener,
+ * dimana response listener dijalankan ketika menerima response dari springboot
+ * dan response error listener ketika tidak menerima response dari springboot
+ */
 public class FilterFragment extends Fragment {
 
     private static final String ARG_PARAM1 = "param1";
@@ -34,6 +43,9 @@ public class FilterFragment extends Fragment {
         // Required empty public constructor
     }
 
+    /**
+     * Inisiasi fragment, diikuti inisiasi pada onCreate
+     */
     public static FilterFragment newInstance(String param1) {
         FilterFragment fragment = new FilterFragment();
         Bundle args = new Bundle();
@@ -51,6 +63,11 @@ public class FilterFragment extends Fragment {
         }
     }
 
+    /**
+     * Hal yang terjadi ketika fragment selesai diinisiasi
+     * yaitu: menghubungkan ke halaman xml, inisasi tombol pada xml,
+     * dan mengatur alur tiap tombol (apa yang terjadi ketika tombol ditekan)
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_filter, container, false);
@@ -58,18 +75,26 @@ public class FilterFragment extends Fragment {
         EditText name = v.findViewById(R.id.inputNameFilter);
         EditText lowestPrice = v.findViewById(R.id.inputLowestPriceFilter);
         EditText highestPrice = v.findViewById(R.id.inputHighestPriceFilter);
+
         CheckBox usedCondition = v.findViewById(R.id.checkBoxUsedFilter);
         CheckBox newCondition = v.findViewById(R.id.checkBoxNewFilter);
+
         Spinner productCategorySpinner = v.findViewById(R.id.spinnerFilter);
 
         Button clearButton = v.findViewById(R.id.buttonClearFilter);
         Button applyButton = v.findViewById(R.id.buttonApplyFilter);
 
+        /**
+         * Alur yang terjadi ketika menekan tombol apply
+         * yaitu: mengambil informasi filter, dan mengubah nilai boolean isFiltered
+         */
         applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 isFiltered = true;
-
+                /**
+                 * Memastikan bahwa semua field terisi sebelum informasinya dapat disimpan
+                 */
                 if(name.getText().toString().isEmpty()
                         || lowestPrice.getText().toString().isEmpty()
                         || highestPrice.getText().toString().isEmpty()) {
@@ -95,11 +120,15 @@ public class FilterFragment extends Fragment {
                     }
                     filterCategory = ProductCategory.valueOf(productCategorySpinner.getSelectedItem().toString());
 
-                    Toast.makeText(getActivity(), "Press GO to apply filter ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Filter applied", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
+        /**
+         * Alur yang terjadi ketika menekan tombol clear,
+         * yaitu: mengosongkan semua field dan mengubah nilai boolean isFiltered
+         */
         clearButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -113,7 +142,7 @@ public class FilterFragment extends Fragment {
                 usedCondition.setChecked(false);
                 productCategorySpinner.setSelection(0);
 
-                Toast.makeText(getActivity(), "Press GO to clear filter", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Filter cleared", Toast.LENGTH_SHORT).show();
             }
         });
 

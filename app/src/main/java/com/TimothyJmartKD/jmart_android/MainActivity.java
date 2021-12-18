@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -21,9 +22,18 @@ import com.TimothyJmartKD.jmart_android.model.Product;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Activity yang menjadi main activity untuk main page
+ * yaitu: inisiasi kedua fragment dalam activity main
+ *
+ * Activity ini menggunakan 2 fragment,
+ * yaitu: ProductsFragment dan FilterFragment
+ * Beberapa method pertama berfungsi untuk inisiasi kedua fragment ini
+ *
+ * Activity ini memanfaatkan response listener dan error response listener,
+ * dimana response listener dijalankan ketika menerima response dari springboot
+ * dan response error listener ketika tidak menerima response dari springboot
+ */
 public class MainActivity extends AppCompatActivity {
     private static final int NUM_PAGES = 2;
     //The pager widget, which handles animation and allows swiping horizontally to access previous and next wizard steps.
@@ -34,6 +44,11 @@ public class MainActivity extends AppCompatActivity {
     private String[] titles = new String[]{"Products", "Filter"};
     // tab titles
 
+    /**
+     * Hal yang terjadi ketika activity dimulai
+     * yaitu: menghubungkan ke halaman xml dan mencari komponen yang ada pada xml
+     * dengan menggunakan id nya
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +60,13 @@ public class MainActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager,(tab, position) -> tab.setText(titles[position])).attach();
     }
 
+    /**
+     * Inisiasi ProductsFragment sebagai fragment pertama
+     * dan FilterFragment sebagai fragment kedua
+     *
+     * Selain itu, ProductsFragment juga dijadikan default
+     * yang artinya dia merupakan fragment pertama yang dibuka ketika activity dijalankan
+     */
     private class MyPagerAdapter extends FragmentStateAdapter {
         public MyPagerAdapter(FragmentActivity fa) {
             super(fa);
@@ -69,7 +91,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
+    /**
+     * Mengatur fungsi back button pada masing2 fragment
+     */
     @Override
     public void onBackPressed() {
         if (viewPager.getCurrentItem() == 0) {
@@ -82,12 +106,22 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Alur yang terjadi ketika masing2 menu item ditekan,
+     * yaitu: pindah ke halamannya masing - masing
+     *
+     * Perlu diketahui bahwa add_box(create product) dan sticky_note_2(invoice)
+     * hanya dapat diakses apabila user memiliki sebuah store
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
             case R.id.add_box:
                 Intent toCreateProductPage = new Intent(MainActivity.this, CreateProductActivity.class);
-                startActivity(toCreateProductPage);
+                if(LoginActivity.getLoggedAccount().store != null)
+                    startActivity(toCreateProductPage);
+                else Toast.makeText(MainActivity.this,
+                        "Need a store to create product", Toast.LENGTH_SHORT).show();
                 return true;
             case R.id.person:
                 Intent toAboutMePage = new Intent(MainActivity.this, AboutMeActivity.class);
@@ -95,17 +129,23 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.sticky_note_2:
                 Intent toInvoicePage = new Intent(MainActivity.this, InvoiceActivity.class);
-                startActivity(toInvoicePage);
+                if(LoginActivity.getLoggedAccount().store != null)
+                    startActivity(toInvoicePage);
+                else Toast.makeText(MainActivity.this,
+                        "Need a store to access invoice", Toast.LENGTH_SHORT).show();
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
 
+    /**
+     * Inisiasi activity ini sehingga menggunakan main menu (beberapa ikon kecil di pojok kanan atas)
+     * Selain itu, berfungsi untuk mengatur cara kerja tombol search,
+     * yaitu: menyocokkan nama dan input, kemudian mengembalikan ListView dengan entry yang cocok
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
-
-        menu.findItem(R.id.add_box).setVisible(LoginActivity.getLoggedAccount().store != null);
         androidx.appcompat.widget.SearchView search = (androidx.appcompat.widget.SearchView) menu.findItem(R.id.search).getActionView();
         ArrayAdapter<Product> adapter = new ArrayAdapter<Product>(MainActivity.this, android.R.layout.simple_list_item_1, productReturned);
         ListView listView = findViewById(R.id.productsList);
